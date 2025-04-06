@@ -102,28 +102,36 @@ function renderGuestList() {
 
     if (selectedFilter !== "all" && selectedFilter !== attendance) return;
 
-    const li = document.createElement("li");
-    li.style.animationDelay = `${Math.min(index * 50, 500)}ms`;
+    const card = document.createElement("div");
+    card.classList.add("guest-card");
+    card.style.animationDelay = `${Math.min(index * 50, 500)}ms`;
 
-    const nameEl = document.createElement("span");
-    nameEl.textContent = name;
+    const top = document.createElement("div");
+    top.classList.add("guest-top");
 
-    const statusEl = document.createElement("span");
-    statusEl.classList.add("guest-status");
-    statusEl.innerHTML = convertStatus(attendance);
+    const nameBox = document.createElement("div");
+    nameBox.classList.add("guest-name");
+    nameBox.innerHTML = `<i class="fa-solid fa-user"></i> ${name}`;
 
-    const topRow = document.createElement("div");
-    topRow.classList.add("top-row");
-    topRow.appendChild(nameEl);
-    topRow.appendChild(statusEl);
-    li.appendChild(topRow);
+    const statusBadge = document.createElement("div");
+    statusBadge.classList.add(
+      "guest-status-badge",
+      `guest-status-${attendance}`
+    );
+    statusBadge.innerHTML = convertStatus(attendance, true);
 
-    const commentEl = document.createElement("div");
-    commentEl.classList.add("comment");
-    commentEl.textContent = comment ? comment : "";
-    li.appendChild(commentEl);
+    top.appendChild(nameBox);
+    top.appendChild(statusBadge);
+    card.appendChild(top);
 
-    guestOutput.appendChild(li);
+    if (comment) {
+      const commentBox = document.createElement("div");
+      commentBox.classList.add("guest-comment");
+      commentBox.textContent = comment;
+      card.appendChild(commentBox);
+    }
+
+    guestOutput.appendChild(card);
   });
 
   const total = yesCount + maybeCount + noCount;
@@ -135,22 +143,21 @@ function renderGuestList() {
   `;
 }
 
-
-
 // ✅ Отслеживаем изменения фильтра
 filterSelect.addEventListener("change", renderGuestList);
 
-// ✅ Статус иконки
-function convertStatus(value) {
-  switch (value) {
-    case "yes":
-      return `<i class="fa-solid fa-circle-check" style="color: #28a745;"></i> Придёт`;
-    case "maybe":
-      return `<i class="fa-solid fa-circle-question" style="color: #ffc107;"></i> Возможно`;
-    case "no":
-      return `<i class="fa-solid fa-circle-xmark" style="color: #dc3545;"></i> Не сможет`;
-    default:
-      return "";
-  }
-}
+function convertStatus(value, labelOnly = false) {
+  const icons = {
+    yes: "fa-circle-check",
+    maybe: "fa-circle-question",
+    no: "fa-circle-xmark",
+  };
+  const labels = {
+    yes: "Придёт",
+    maybe: "Возможно",
+    no: "Не сможет",
+  };
 
+  const icon = `<i class="fa-solid ${icons[value]}"></i>`;
+  return labelOnly ? `${icon} ${labels[value]}` : labels[value];
+}

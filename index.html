@@ -10,6 +10,8 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Spectral:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"
     rel="stylesheet">
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+
 
   <style>
     * {
@@ -498,73 +500,82 @@
       transition: all 0.3s ease;
     }
 
-    .guest-list {
-      list-style: none;
-      padding: 0;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .guest-list li {
-      background-color: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-bottom: 14px;
-      font-size: 1rem;
+    .guest-card {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      /* ✅ задаём отступ между name/status и комментом */
-      transition: all 0.3s ease;
-      min-height: 80px;
-      /* ✅ гарантирует одинаковую высоту */
+      background-color: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      min-height: 100px;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.04);
       animation: fadeInUp 0.4s ease forwards;
       opacity: 0;
+      transition: background-color 0.3s ease;
     }
 
-    .guest-list li:hover {
-      background-color: rgba(255, 255, 255, 0.07);
+    .guest-card:hover {
+      background-color: rgba(255, 255, 255, 0.06);
     }
 
-    .guest-list li .top-row {
+    .guest-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
-      gap: 6px;
+    }
+
+    .guest-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guest-name i {
+      font-size: 1.2rem;
+    }
+
+    .guest-status-badge {
+      font-size: 0.95rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+      display: inline-block;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .guest-status-yes {
+      color: #28a745;
+      background-color: rgba(40, 167, 69, 0.1);
+      border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+
+    .guest-status-maybe {
+      color: #ffc107;
+      background-color: rgba(255, 193, 7, 0.1);
+      border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+
+    .guest-status-no {
+      color: #dc3545;
+      background-color: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+
+    .guest-comment {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-top: auto;
       word-break: break-word;
     }
 
-    .guest-status i {
-      font-size: 1em;
-      line-height: 1;
-      position: relative;
-      top: 1px;
-      /* можно играться: 0, 1px, 2px в зависимости от иконки */
-    }
 
-    .comment {
-      font-size: 0.9em;
-      color: #ccc;
-      margin-top: auto;
-      /* ✅ предотвращает лишние отступы */
-    }
 
-    .comment:empty {
-      display: block;
-      height: 1em;
-      opacity: 0;
-    }
-
-    .guest-status {
-      font-size: 1.1em;
-      font-weight: normal;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      vertical-align: middle;
-    }
 
     .guest-stats {
       text-align: center;
@@ -578,6 +589,43 @@
       text-align: center;
       margin-bottom: 1rem;
     }
+
+    #guest-output {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      max-height: 600px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    /* Элегантный scroll для WebKit-браузеров (Chrome, Safari, Edge) */
+    #guest-output::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #guest-output::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #guest-output::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    #guest-output::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Firefox */
+    #guest-output {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+
+
+
 
     #filter-select {
       padding: 6px 10px;
@@ -639,6 +687,65 @@
       transform: translateY(20px);
       animation: fadeSlideUp 0.8s ease 0.6s forwards;
     }
+
+    .location-card {
+      background-color: rgba(255, 255, 255, 0.04);
+      padding: 1.5rem 2rem;
+      border-radius: 16px;
+      text-align: left;
+      max-width: 600px;
+      margin: 2rem auto 0;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      transition: all 0.3s ease;
+    }
+
+    .location-card h3 {
+      font-family: "Spectral", serif;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #fff;
+    }
+
+    .location-card p {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin: 0.4rem 0;
+    }
+
+    .location-card .button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.2rem;
+      background-color: white;
+      color: black;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .location-card .button:hover {
+      background-color: #e0e0e0;
+    }
+
+    .route-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 480px) {
+      .route-buttons {
+        flex-direction: row;
+      }
+
+      .route-buttons .button {
+        flex: 1;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 
@@ -688,10 +795,29 @@
     <div class="overlay"></div>
     <div class="content">
       <h2>Где?</h2>
-      <p>г. Усть-Абакан, ул. Набережная, 68</p>
-      <p>Шатёр «Нежность»</p>
-    </div>
+
+      <!-- 🗺️ Карта -->
+      <div id="map" style="width: 100%; height: 400px; border-radius: 12px; overflow: hidden;"></div>
+
+      <!-- 📝 Карточка -->
+      <div class="location-card">
+        <h3>📍 Ресторан «BROWN STREET»</h3>
+        <p>📅 <strong>Дата:</strong> 5 июня 2025, 16:00</p>
+        <p>📍 <strong>Адрес:</strong> г. Петропавловск, ул. Конституции Казахстана, 41</p>
+
+        <div class="route-buttons">
+          <a href="https://yandex.ru/maps/?rtext=~54.863307,69.138225&rtt=auto" target="_blank" class="button">
+            🚗 Проложить маршрут на авто
+          </a>
+          <a href="https://yandex.ru/maps/?rtext=~54.863307,69.138225&rtt=pedestrian" target="_blank" class="button">
+            🚶 Пеший маршрут
+          </a>
+        </div>
+      </div>
+
   </section>
+
+
 
   <section id="dress" class="dress-code" style="background-image: url('couple.jpeg')">
     <div class="overlay"></div>
@@ -717,13 +843,13 @@
     </div>
   </section>
 
-  <section style="background-color: #222">
+  <!--<section style="background-color: #222">
     <div class="content">
       <h2>Локация на карте</h2>
-      <iframe
-        src="https://yandex.ru/map-widget/v1/?um=constructor%3A5c0ff4ea36e48e39dd927c2f0179ff5c22b1b00b17a8f22df0ae1e7b01e1dc3a&amp;source=constructor"></iframe>
+      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
-  </section>
+  </section>-->
+
 
   <section id="rsvp" style="background-color: #000">
     <div class="content">
@@ -786,9 +912,7 @@
       const distance = weddingDate - now;
 
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
@@ -864,6 +988,34 @@
       });
     });
   </script>
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+  <script>
+    ymaps.ready(init);
+    function init() {
+      const myMap = new ymaps.Map("map", {
+        center: [54.863307, 69.138225],
+        zoom: 16,
+        controls: ["zoomControl", "fullscreenControl"]
+      });
+
+      const myPlacemark = new ymaps.Placemark(
+        [54.863307, 69.138225],
+        {
+          balloonContent: "<strong>Ресторан «BROWN STREET»</strong><br>ул. Конституции Казахстана, 41",
+          hintContent: "Здесь будет праздник 🎉"
+        },
+        {
+          preset: "islands#redDiningIcon",
+          iconColor: "#ff648c"
+        }
+      );
+
+      myMap.geoObjects.add(myPlacemark);
+      myPlacemark.balloon.open();
+    }
+  </script>
+
+
   <script type="module" src="firebase.js"></script>
 </body>
 
