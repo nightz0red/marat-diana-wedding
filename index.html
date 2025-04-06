@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Свадьба Марата и Дианы</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Lato", sans-serif;
+        color: white;
+        background-color: #000;
+        overflow-x: hidden;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 10px 0;
+        z-index: 1000;
+        text-align: center;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      section {
+        position: relative;
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        animation: fadeIn 1.2s ease forwards;
+      }
+
+      section:nth-of-type(1) {
+        animation-delay: 0s;
+      }
+      section:nth-of-type(2) {
+        animation-delay: 0.3s;
+      }
+      section:nth-of-type(3) {
+        animation-delay: 0.6s;
+      }
+      section:nth-of-type(4) {
+        animation-delay: 0.9s;
+      }
+      section:nth-of-type(5) {
+        animation-delay: 1.2s;
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+      }
+
+      .content {
+        position: relative;
+        z-index: 2;
+        padding: 2rem;
+      }
+
+      h1,
+      h2 {
+        font-family: "Cormorant Garamond", serif;
+        font-weight: 600;
+      }
+
+      h1 {
+        font-size: 3em;
+        margin-bottom: 0.5em;
+      }
+
+      h2 {
+        font-size: 2em;
+        margin-bottom: 0.5em;
+      }
+
+      p {
+        font-size: 1.2em;
+        font-weight: 300;
+        font-style: italic;
+        max-width: 600px;
+        margin: 0 auto 1em;
+      }
+
+      .dress-code .content {
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 8px;
+        padding: 2rem;
+      }
+
+      .palette {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .color {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      .gray {
+        background-color: #888;
+      }
+      .lightgray {
+        background-color: #ccc;
+      }
+      .black {
+        background-color: #000;
+        border: 1px solid #fff;
+      }
+
+      a.button {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: white;
+        color: black;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      a.button:hover {
+        background-color: #eee;
+      }
+
+      button.button {
+        background-color: white;
+        color: black;
+        padding: 10px 20px;
+        font-size: 1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button.button:hover {
+        background-color: #eee;
+      }
+
+      #scrollTopBtn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 999;
+        background-color: white;
+        color: black;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        display: none;
+      }
+
+      .timer {
+        font-size: 2em;
+        font-weight: 500;
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        margin-top: 1.5rem;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        display: inline-block;
+      }
+
+      iframe {
+        width: 100%;
+        height: 300px;
+        border: none;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        max-width: 500px;
+        margin: 2rem auto;
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border-radius: 6px;
+        border: none;
+        font-size: 1em;
+        font-family: "Lato", sans-serif;
+        color: #000;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url("https://www.transparenttextures.com/patterns/white-wall.png");
+        opacity: 0.03;
+        z-index: 0;
+      }
+
+      nav a {
+        transition: all 0.3s ease;
+      }
+
+      nav a:hover {
+        color: #ccc;
+        transform: scale(1.05);
+      }
+
+      form input:focus,
+      form textarea:focus,
+      form select:focus {
+        outline: 2px solid #fff;
+        background-color: #f8f8f8;
+      }
+
+      .button i {
+        margin-right: 8px;
+      }
+
+      .burger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        position: fixed;
+        top: 15px;
+        right: 20px;
+        z-index: 1001;
+      }
+
+      .burger span {
+        width: 25px;
+        height: 3px;
+        background: white;
+        margin: 4px 0;
+        transition: 0.3s;
+      }
+
+      nav {
+        transition: transform 0.3s ease;
+      }
+
+      /* Адаптация под мобилки */
+      @media (max-width: 768px) {
+        nav {
+          transform: translateX(-100%);
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 80px 20px 20px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          height: 100vh;
+          width: 100%;
+          background-color: rgba(0, 0, 0, 0.3); /* Прозрачный */
+          backdrop-filter: blur(10px); /* Добавляем размытость */
+          -webkit-backdrop-filter: blur(10px); /* Для Safari */
+          z-index: 1000;
+        }
+
+        nav.open {
+          transform: translateX(0);
+        }
+
+        nav a {
+          font-size: 1.5em;
+          margin: 1rem 0;
+          transition: color 0.3s ease;
+        }
+
+        .burger {
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 15px;
+          right: 20px;
+          z-index: 1001;
+          cursor: pointer;
+        }
+
+        .burger span {
+          height: 3px;
+          width: 25px;
+          background: white;
+          margin: 4px 0;
+          transition: 0.3s;
+        }
+
+        /* Анимация крестика */
+        .burger.open span:nth-child(1) {
+          transform: rotate(45deg) translateY(8px);
+        }
+
+        .burger.open span:nth-child(2) {
+          opacity: 0;
+        }
+
+        .burger.open span:nth-child(3) {
+          transform: rotate(-45deg) translateY(-8px);
+        }
+      }
+      .menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3); /* Тень без размытия */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        z-index: 900;
+      }
+      .menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      #rsvp-message {
+        margin-top: 1.5rem;
+        font-size: 1rem;
+        text-align: center;
+        padding: 12px 20px;
+        border-radius: 8px;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        font-weight: 500;
+        backdrop-filter: blur(4px);
+      }
+
+      #rsvp-message.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      #rsvp-message.success {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.4);
+      }
+
+      #rsvp-message.error {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.4);
+      }
+      nav a.active {
+        border-bottom: 2px solid white;
+        color: #fff;
+        transition: all 0.3s ease;
+      }
+      .guest-list {
+        list-style: none;
+        padding: 0;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .guest-list li {
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        padding: 16px 20px;
+        margin-bottom: 14px;
+        font-size: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* ✅ задаём отступ между name/status и комментом */
+        transition: all 0.3s ease;
+        min-height: 80px; /* ✅ гарантирует одинаковую высоту */
+        animation: fadeInUp 0.4s ease forwards;
+        opacity: 0;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .guest-list li:hover {
+        background-color: rgba(255, 255, 255, 0.07);
+      }
+
+      .guest-list li .top-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 6px;
+        word-break: break-word;
+      }
+
+      .guest-status i {
+        font-size: 1em;
+        line-height: 1;
+        position: relative;
+        top: 1px; /* можно играться: 0, 1px, 2px в зависимости от иконки */
+      }
+
+      .comment {
+        font-size: 0.9em;
+        color: #ccc;
+        margin-top: auto; /* ✅ предотвращает лишние отступы */
+      }
+      .comment:empty {
+        display: block;
+        height: 1em;
+        opacity: 0;
+      }
+
+      .guest-status {
+        font-size: 1.1em;
+        font-weight: normal;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        vertical-align: middle;
+      }
+
+      .guest-stats {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        font-weight: 500;
+        opacity: 0.9;
+      }
+      .guest-filter {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+
+      #filter-select {
+        padding: 6px 10px;
+        font-size: 1rem;
+        border-radius: 6px;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="burger" onclick="toggleMenu(this)">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav id="navbar">
+      <a href="#countdown">Главная</a>
+      <a href="#invite">Приглашение</a>
+      <a href="#place">Где?</a>
+      <a href="#dress">Дресс-код</a>
+      <a href="#chat">Чат</a>
+      <a href="#rsvp">Анкета</a>
+      <a href="#guest-list">Гости</a>
+    </nav>
+    <div class="menu-overlay" onclick="closeMenu()"></div>
+
+    <section id="countdown" style="background-image: url('images/couple.jpeg')">
+      <div class="overlay"></div>
+      <div class="content">
+        <h1>Марат + Диана</h1>
+        <h2>05.06.25</h2>
+        <div class="timer" id="countdown-timer"></div>
+      </div>
+    </section>
+
+    <section id="invite" style="background-image: url('images/symbol.jpg')">
+      <div class="overlay"></div>
+      <div class="content">
+        <h2>Дорогие друзья!</h2>
+        <p>
+          Приглашаем вас и вашу вторую половинку стать свидетелями дня рождения
+          нашей семьи!
+        </p>
+      </div>
+    </section>
+
+    <section id="place" style="background-image: url('images/XXXL.webp')">
+      <div class="overlay"></div>
+      <div class="content">
+        <h2>Где?</h2>
+        <p>г. Усть-Абакан, ул. Набережная, 68</p>
+        <p>Шатёр «Нежность»</p>
+      </div>
+    </section>
+
+    <section
+      id="dress"
+      class="dress-code"
+      style="background-image: url('couple.jpeg')"
+    >
+      <div class="overlay"></div>
+      <div class="content">
+        <h2>Dress code</h2>
+        <p>Серый / Светло-серый / Чёрный</p>
+        <div class="palette">
+          <span class="color gray"></span>
+          <span class="color lightgray"></span>
+          <span class="color black"></span>
+        </div>
+      </div>
+    </section>
+
+    <section id="chat" style="background-color: #111">
+      <div class="content">
+        <h2>Чат гостей</h2>
+        <p>
+          Присоединяйтесь к нашему Telegram-каналу, чтобы делиться фото и
+          получать новости!
+        </p>
+        <a href="https://t.me/yourchat" class="button"
+          ><i class="fab fa-telegram"></i>Перейти в чат</a
+        >
+      </div>
+    </section>
+
+    <section style="background-color: #222">
+      <div class="content">
+        <h2>Локация на карте</h2>
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?um=constructor%3A5c0ff4ea36e48e39dd927c2f0179ff5c22b1b00b17a8f22df0ae1e7b01e1dc3a&amp;source=constructor"
+        ></iframe>
+      </div>
+    </section>
+
+    <section id="rsvp" style="background-color: #000">
+      <div class="content">
+        <h2>Анкета</h2>
+        <form action="#" method="POST">
+          <input type="text" name="name" placeholder="Ваше имя" required />
+          <select name="attendance" required>
+            <option value="yes">Я приду</option>
+            <option value="maybe">Возможно приду</option>
+            <option value="no">К сожалению, не смогу</option>
+          </select>
+          <textarea
+            name="comment"
+            placeholder="Комментарий (например, аллергии)"
+          ></textarea>
+          <button type="submit" class="button">
+            <i class="fas fa-paper-plane"></i>Отправить
+          </button>
+        </form>
+        <div id="rsvp-message" class="hidden"></div>
+      </div>
+    </section>
+
+    <section id="guest-list" style="background-color: #111; color: white">
+      <div class="content">
+        <h2>Кто уже ответил</h2>
+        <div class="guest-filter">
+          <label for="filter-select">Фильтр:</label>
+          <select id="filter-select">
+            <option value="all">Все</option>
+            <option value="yes">✅ Придут</option>
+            <option value="maybe">🤔 Возможно</option>
+            <option value="no">❌ Не смогут</option>
+          </select>
+        </div>
+
+        <div id="guest-stats" class="guest-stats"></div>
+        <ul id="guest-output" class="guest-list"></ul>
+      </div>
+    </section>
+
+    <button onclick="scrollToTop()" id="scrollTopBtn">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+      // Показ кнопки "Наверх"
+      window.onscroll = function () {
+        document.getElementById("scrollTopBtn").style.display =
+          window.scrollY > 300 ? "block" : "none";
+      };
+
+      function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      // Таймер обратного отсчета
+      const countdown = document.getElementById("countdown-timer");
+      const weddingDate = new Date("2025-06-05T16:00:00").getTime();
+
+      setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdown.innerHTML = `До свадьбы осталось: ${days}д ${hours}ч ${minutes}м ${seconds}с`;
+      }, 1000);
+
+      // Меню с оверлеем
+      function toggleMenu(burger = null) {
+        const nav = document.getElementById("navbar");
+        const overlay = document.querySelector(".menu-overlay");
+
+        nav.classList.toggle("open");
+        overlay.classList.toggle("active");
+
+        if (burger) {
+          burger.classList.toggle("open");
+        }
+      }
+
+      function closeMenu() {
+        const nav = document.getElementById("navbar");
+        const burger = document.querySelector(".burger");
+        const overlay = document.querySelector(".menu-overlay");
+
+        nav.classList.remove("open");
+        burger.classList.remove("open");
+        overlay.classList.remove("active");
+      }
+
+      document.querySelectorAll("#navbar a").forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+      document.querySelectorAll('nav a[href^="#"]').forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          const target = document.querySelector(targetId);
+
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+
+          // Закрытие меню после клика (если моб. меню)
+          closeMenu();
+        });
+      });
+
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll("nav a");
+
+      window.addEventListener("scroll", () => {
+        let currentSection = "";
+
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop - 100;
+          const sectionHeight = section.offsetHeight;
+          if (
+            pageYOffset >= sectionTop &&
+            pageYOffset < sectionTop + sectionHeight
+          ) {
+            currentSection = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === `#${currentSection}`) {
+            link.classList.add("active");
+          }
+        });
+      });
+    </script>
+    <script type="module" src="firebase.js"></script>
+  </body>
+</html>
